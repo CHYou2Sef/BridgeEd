@@ -16,12 +16,18 @@ export interface UserStats {
   streak: number;
 }
 
+export interface Enrollment {
+  courseId: string;
+  dueDate?: string; // ISO date string
+  progress: number; // 0 to 100
+}
+
 export interface User {
   id: string;
   email: string;
   name: string;
   tier: SubscriptionTier;
-  enrolled: string[];
+  enrolled: Enrollment[];
   stats: UserStats;
 }
 

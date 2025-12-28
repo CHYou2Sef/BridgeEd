@@ -8,9 +8,10 @@ interface Props {
   course: Course;
   lang: Language;
   onClose: () => void;
+  onSuccessfulPractice?: (courseId: string) => void;
 }
 
-const CoursePractice: React.FC<Props> = ({ course, lang, onClose }) => {
+const CoursePractice: React.FC<Props> = ({ course, lang, onClose, onSuccessfulPractice }) => {
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const [userAnswer, setUserAnswer] = useState('');
   const [result, setResult] = useState<GradeResult | null>(null);
@@ -41,6 +42,9 @@ const CoursePractice: React.FC<Props> = ({ course, lang, onClose }) => {
     try {
       const res = await gateway.submitGrading(exercise, userAnswer, lang);
       setResult(res);
+      if (res.isCorrect && onSuccessfulPractice) {
+        onSuccessfulPractice(course.id);
+      }
     } catch (e) {
       console.error("[Grading Svc Error]", e);
     } finally {

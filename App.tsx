@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language, Region, Course, User, SubscriptionTier } from './types';
+import { Language, Region, Course, User, SubscriptionTier, Enrollment } from './types';
 import { UI_TEXT } from './constants';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import CourseGrid from './components/CourseGrid';
@@ -37,13 +37,42 @@ const App: React.FC = () => {
 
   const toggleEnroll = (id: string) => {
     if (!user) return;
-    const newEnrolled = user.enrolled.includes(id) 
-      ? user.enrolled.filter(i => i !== id) 
-      : [...user.enrolled, id];
+    const isEnrolled = user.enrolled.some(e => e.courseId === id);
+    const newEnrolled: Enrollment[] = isEnrolled 
+      ? user.enrolled.filter(e => e.courseId !== id) 
+      : [...user.enrolled, { courseId: id, progress: 0 }];
     
     const updatedUser = { ...user, enrolled: newEnrolled };
     setUser(updatedUser);
     // Persist to simulated local session
+    const session = auth.getSession();
+    localStorage.setItem('bridge_ed_session', JSON.stringify({ ...session, user: updatedUser }));
+  };
+
+  const updateCourseDueDate = (courseId: string, dueDate: string) => {
+    if (!user) return;
+    const newEnrolled = user.enrolled.map(e => 
+      e.courseId === courseId ? { ...e, dueDate } : e
+    );
+    const updatedUser = { ...user, enrolled: newEnrolled };
+    setUser(updatedUser);
+    const session = auth.getSession();
+    localStorage.setItem('bridge_ed_session', JSON.stringify({ ...session, user: updatedUser }));
+  };
+
+  const handleSuccessfulPractice = (courseId: string) => {
+    if (!user) return;
+    const newEnrolled = user.enrolled.map(e => {
+      if (e.courseId === courseId) {
+        // Increment progress by 10% on each correct practice session, cap at 100
+        const newProgress = Math.min(e.progress + 10, 100);
+        return { ...e, progress: newProgress };
+      }
+      return e;
+    });
+    
+    const updatedUser = { ...user, enrolled: newEnrolled };
+    setUser(updatedUser);
     const session = auth.getSession();
     localStorage.setItem('bridge_ed_session', JSON.stringify({ ...session, user: updatedUser }));
   };
@@ -162,17 +191,19 @@ const App: React.FC = () => {
               <CoursePractice 
                 course={practicingCourse} 
                 lang={lang} 
-                onClose={() => setPracticingCourse(null)} 
+                onClose={() => setPracticingCourse(null)}
+                onSuccessfulPractice={handleSuccessfulPractice}
               />
             ) : (
               <div className="animate-in fade-in duration-700">
                 <CourseGrid 
                   lang={lang} 
                   region={region} 
-                  enrolledIds={user.enrolled}
+                  enrollments={user.enrolled}
                   subscription={user.tier}
                   onToggleEnroll={toggleEnroll}
                   onPractice={setPracticingCourse}
+                  onUpdateDueDate={updateCourseDueDate}
                   showOnlyEnrolled={activeTab === 'my-courses'}
                 />
               </div>

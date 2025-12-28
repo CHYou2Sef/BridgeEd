@@ -41,7 +41,13 @@ export const UI_TEXT = {
     hasAccount: "Already have an account?",
     authSubtitle: "Access your global learning dashboard",
     createAccount: "Create your Account",
-    selectTier: "Select your Plan"
+    selectTier: "Select your Plan",
+    dueDate: "Due Date",
+    setDeadline: "Set Deadline",
+    noDeadline: "No deadline set",
+    progress: "Course Progress",
+    completed: "Completed",
+    searchPlaceholder: "Search courses..."
   },
   fr: {
     welcome: "BridgeEd Premium",
@@ -82,7 +88,13 @@ export const UI_TEXT = {
     hasAccount: "Déjà un compte ?",
     authSubtitle: "Accédez à votre tableau de bord",
     createAccount: "Créer votre compte",
-    selectTier: "Choisissez votre plan"
+    selectTier: "Choisissez votre plan",
+    dueDate: "Date d'échéance",
+    setDeadline: "Définir",
+    noDeadline: "Aucune échéance",
+    progress: "Progression",
+    completed: "Terminé",
+    searchPlaceholder: "Rechercher des cours..."
   },
   ar: {
     welcome: "BridgeEd المميز",
@@ -123,7 +135,13 @@ export const UI_TEXT = {
     hasAccount: "لديك حساب بالفعل؟",
     authSubtitle: "الوصول إلى لوحة التعلم العالمية الخاصة بك",
     createAccount: "إنشاء حسابك",
-    selectTier: "اختر خطتك"
+    selectTier: "اختر خطتك",
+    dueDate: "تاريخ الاستحقاق",
+    setDeadline: "تحديد الموعد",
+    noDeadline: "لم يتم تحديد موعد",
+    progress: "تقدم الدورة",
+    completed: "مكتمل",
+    searchPlaceholder: "ابحث عن الدورات..."
   }
 };
 
