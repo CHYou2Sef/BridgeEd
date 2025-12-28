@@ -1,0 +1,7 @@
+{
+  "name": "BridgeEd - Multilingual EdTech Platform",
+  "description": "A cross-cultural educational platform bridging the Arab and Western worlds through science, critical thinking, and mutual understanding. Features AI-powered tutoring and multilingual exchange forums.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
